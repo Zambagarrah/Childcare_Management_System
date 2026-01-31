@@ -1,0 +1,96 @@
+These functionalities represent the minimum system requirements and form the basis for assessment and grading. A Student Information Management System (SIMS) is used throughout as the reference example.
+
+1. User Authentication and Role Management (20%)
+Description
+The system must provide a secure mechanism for user identification and access control. Authentication ensures that only authorized users can access the system, while role management restricts users to permitted actions based on their responsibilities.
+Minimum Requirements
+•	User registration and login functionality
+•	Secure authentication using password hashing and sessions
+•	At least two user roles (e.g., Administrator and Student)
+SIMS Example
+•	Administrator: Manages students, courses, and results
+•	Student: Logs in to register courses and view results
+Importance
+Authentication and role management protect sensitive student data and ensure system security and integrity.
+Marking Guide
+•	Login and registration functionality: 8%
+•	Role-based access control: 8%
+•	Logout and session management: 4%
+Total: 20%
+
+2. Core Data Management (CRUD Operations) (20%)
+Description
+The system must allow users to manage data using standard database operations. This functionality forms the backbone of any information system.
+Minimum Requirements
+•	Create, Read, Update, and Delete (CRUD) operations
+•	Persistent data storage using a database
+•	Proper input validation to prevent invalid or empty data
+SIMS Example
+•	Manage student records
+•	Manage courses and academic results
+Importance
+Effective data management ensures data accuracy, consistency, and reliability.
+Marking Guide
+•	Create and view records: 8%
+•	Update and delete records: 8%
+•	Input validation and error handling: 4%
+Total: 20%
+
+3. Business Logic and Core System Functionality (20%)
+Description
+The application must correctly implement the main purpose of the system and enforce all defined operational rules.
+Minimum Requirements
+•	Core system processes must function correctly
+•	Business rules must be enforced by the system logic
+SIMS Example
+•	Student course registration
+Importance
+This demonstrates the student’s ability to translate real-world requirements into functional system logic.
+Marking Guide
+•	Core processes implemented correctly: 12%
+•	Enforcement of business rules: 8%
+Total: 20%
+
+4. User Interface and Usability (20%)
+Description
+The system must provide a user-friendly and visually consistent interface that supports easy navigation and accessibility.
+Minimum Requirements
+•	Clear and intuitive user interface
+•	Responsive design for desktop and mobile devices
+•	Logical navigation between pages
+Technical Expectations
+•	Proper use of HTML and CSS
+•	Use of Bootstrap or similar UI framework is allowed
+Importance
+A system must be easy to use and visually appealing to enhance user experience.
+Marking Guide
+•	Page layout and navigation: 8%
+•	Responsiveness across devices: 6%
+•	Consistency and readability of the interface: 6%
+Total: 20%
+
+5. Security &Validation and Reporting (20%)
+Description
+The system must implement basic security measures and provide meaningful reports or summaries to support decision-making.
+Minimum Requirements
+•	Client-side and server-side input validation
+•	Basic security features (e.g., restricted access, protected routes)
+•	At least one report or summary page
+SIMS Example
+•	Student lists
+•	Academic results reports
+Importance
+This functionality demonstrates professionalism and prepares students for real-world system development.
+Marking Guide
+•	Input validation and basic security controls: 10%
+•	Report and summary generation: 10%
+Total: 20%
+______________
+Summary of Mark Allocation (100%)
+No.	Core Functionality	Percentage
+1	User Authentication & Role Management	20%
+2	Core Data Management (CRUD)	20%
+3	Business Logic & Core Functionality	20%
+4	User Interface & Usability	20%
+5	Security, Validation & Reporting	20%
+	TOTAL	100%
