@@ -1,0 +1,33 @@
+Phase 1: Project Setup
+	1. Initialised the Django Backend with rest-framework, cors & an app accounts to handle logins, registrations.
+		Configured the settings(CORS) to handle the react frontend.
+		Added the installed packages in the installed apps.
+	2. Initialised the React Frontend.
+		Installed dependencies i.e 
+			- Axios: For backend-frontend communication.
+			- React-router-dom: For navigation link routing.
+			- Bootstrap: For styling.
+		Setup up Folder structure i.e components, services pages etc.
+	3. Configured CORS & API connection.
+		Allow React frontend & backend to commmunicate.
+		Tested with a simple API endpoint i.e (/api/health).	
+Phase 2: User Authentication & Role Management.
+	Backend
+	Frontend
+Phase 3: Core Data Management (CRUD).
+        Backend 
+        Frontend
+Phase 4: Business Logic & Core Functionality
+        Backend 
+        Frontend
+Phase 5: UI, UX & Usability
+	Frontend
+	Backend
+Phase 6: Security, Validation & Reporting
+        Backend 
+        Frontend
+Final Touches:
+	Backend: Django REST API with authentication, CRUD, business rules, reporting.
+	Frontend: ReactJS app with role-based dashboards, responsive UI, validation, reporting.
+	Database: MySQL/MongoDB with persistent storage.
+	Reports: Attendance & billing summaries (CSV/JSON).
