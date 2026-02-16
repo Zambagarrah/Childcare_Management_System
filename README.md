@@ -1,4 +1,4 @@
-## Childcare_Managemnt_System
+## Childcare_Management_System
 
 Final Yr Project for: 
 - Name: Grace Mucheru Waithira.
