@@ -24,7 +24,7 @@ class Child(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         limit_choices_to={'role': 'PARENT'},
-        related_name='children_as_parent'  # unique reverse accessor
+        related_name='children_as_parent'
     )
 
     # Caregiver relationship
@@ -33,9 +33,8 @@ class Child(models.Model):
         on_delete=models.SET_NULL,
         null=True, blank=True,
         limit_choices_to={'role': 'CAREGIVER'},
-        related_name='children_as_caregiver'  # unique reverse accessor
+        related_name='children_as_caregiver'
     )
 
     def __str__(self):
         return f"{self.name} (Age: {self.age})"
-

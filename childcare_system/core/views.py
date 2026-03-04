@@ -25,3 +25,18 @@ def dashboard(request):
     else:
         return render(request, 'dashboard_parent.html')
 
+@login_required
+def child_list(request):
+    # Admin can see all children
+    if request.user.role == 'ADMIN':
+        children = Child.objects.all()
+    # Parent can only see their own children
+    elif request.user.role == 'PARENT':
+        children = request.user.children_as_parent.all()
+    # Caregiver can only see children assigned to them
+    elif request.user.role == 'CAREGIVER':
+        children = request.user.children_as_caregiver.all()
+    else:
+        children = []
+
+    return render(request, 'child_list.html', {'children': children})
