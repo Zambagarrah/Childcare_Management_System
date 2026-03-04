@@ -18,17 +18,24 @@ class User(AbstractUser):
 class Child(models.Model):
     name = models.CharField(max_length=100)
     age = models.PositiveIntegerField()
+
+    # Parent relationship
     parent = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        limit_choices_to={'role': 'PARENT'}
+        limit_choices_to={'role': 'PARENT'},
+        related_name='children_as_parent'  # unique reverse accessor
     )
+
+    # Caregiver relationship
     caregiver = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True, blank=True,
-        limit_choices_to={'role': 'CAREGIVER'}
+        limit_choices_to={'role': 'CAREGIVER'},
+        related_name='children_as_caregiver'  # unique reverse accessor
     )
 
     def __str__(self):
         return f"{self.name} (Age: {self.age})"
+
