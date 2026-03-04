@@ -31,3 +31,50 @@ Final Touches:
 	Frontend: ReactJS app with role-based dashboards, responsive UI, validation, reporting.
 	Database: MySQL/MongoDB with persistent storage.
 	Reports: Attendance & billing summaries (CSV/JSON).
+Phase 1: Project Setup
+Create Django project (childcare_system)
+
+Create app (core)
+
+Configure settings (Bootstrap CDN, templates, static files)
+
+Setup base template with Bootstrap
+
+Phase 2: Authentication & Roles
+Implement registration & login
+
+Add role field (Admin, Student)
+
+Restrict views based on role
+
+Logout & session management
+
+Phase 3: Core Data Management
+Create Student model (CRUD)
+
+Create Course model (CRUD)
+
+Link Students ↔ Courses
+
+Input validation
+
+Phase 4: Business Logic
+Student course registration
+
+Admin assigns results
+
+Prevent duplicate registrations
+
+Phase 5: UI & Usability
+Navbar + responsive layout
+
+Dashboard pages for Admin & Student
+
+Mobile-friendly forms
+
+Phase 6: Security & Reporting
+Protect routes (login required + role-based)
+
+Add validation checks
+
+Reports: Student list, course enrollment summary
