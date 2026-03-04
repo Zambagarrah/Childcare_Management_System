@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Children{% endblock %}
+{% block content %}
+<h2>Children List</h2>
+
+{% if user.role == 'ADMIN' %}
+    <a href="{% url 'child_create' %}" class="btn btn-primary mb-3">Add Child</a>
+{% endif %}
+
+<table class="table table-striped">
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Parent</th>
+        <th>Caregiver</th>
+        {% if user.role == 'ADMIN' %}
+            <th>Actions</th>
+        {% endif %}
+    </tr>
+    {% for child in children %}
+    <tr>
+        <td>{{ child.name }}</td>
+        <td>{{ child.age }}</td>
+        <td>{{ child.parent.username }}</td>
+        <td>{{ child.caregiver.username if child.caregiver else "Unassigned" }}</td>
+        {% if user.role == 'ADMIN' %}
+        <td>
+            <a href="{% url 'child_update' child.id %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'child_delete' child.id %}" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
