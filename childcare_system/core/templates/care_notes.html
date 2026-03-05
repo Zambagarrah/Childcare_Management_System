@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Care Notes{% endblock %}
+{% block content %}
+<h2>Care Notes for {{ child.name }}</h2>
+
+{% if user.role == 'CAREGIVER' and child.caregiver == user %}
+<form method="post">
+    {% csrf_token %}
+    <textarea name="note" class="form-control mb-2" placeholder="Enter care note"></textarea>
+    <button type="submit" class="btn btn-primary">Add Note</button>
+</form>
+{% endif %}
+
+<hr>
+<h3>Previous Notes</h3>
+<ul class="list-group">
+    {% for note in notes %}
+    <li class="list-group-item">
+        <strong>{{ note.caregiver.username }}</strong> ({{ note.created_at|date:"Y-m-d H:i" }}): {{ note.note }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

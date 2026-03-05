@@ -57,9 +57,10 @@ def child_create(request):
 
 @login_required
 def child_update(request, pk):
+    child = get_object_or_404(Child, pk=pk)
+    # Only Admins can update children (including caregiver assignment)
     if request.user.role != 'ADMIN':
         return HttpResponseForbidden("Only Admins can edit children.")
-    child = get_object_or_404(Child, pk=pk)
     if request.method == 'POST':
         form = ChildForm(request.POST, instance=child)
         if form.is_valid():
@@ -78,3 +79,33 @@ def child_delete(request, pk):
         child.delete()
         return redirect('child_list')
     return render(request, 'child_confirm_delete.html', {'child': child})
+
+@login_required
+def child_create(request):
+    # Only Admins can create children
+    if request.user.role != 'ADMIN':
+        return HttpResponseForbidden("Only Admins can add children.")
+    if request.method == 'POST':
+        form = ChildForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('child_list')
+    else:
+        form = ChildForm()
+    return render(request, 'child_form.html', {'form': form})
+
+@login_required
+def child_update(request, pk):
+    child = get_object_or_404(Child, pk=pk)
+    # Only Admins can update children (including caregiver assignment)
+    if request.user.role != 'ADMIN':
+        return HttpResponseForbidden("Only Admins can edit children.")
+    if request.method == 'POST':
+        form = ChildForm(request.POST, instance=child)
+        if form.is_valid():
+            form.save()
+            return redirect('child_list')
+    else:
+        form = ChildForm(instance=child)
+    return render(request, 'child_form.html', {'form': form})
+
