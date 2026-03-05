@@ -17,3 +17,8 @@ urlpatterns += [
     path('children/<int:pk>/update/', views.child_update, name='child_update'),
     path('children/<int:pk>/delete/', views.child_delete, name='child_delete'),
 ]
+
+urlpatterns += [
+    path('reports/children/', views.child_report, name='child_report'),
+    path('reports/children/<int:child_id>/notes/', views.care_notes_report, name='care_notes_report'),
+]
