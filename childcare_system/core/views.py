@@ -118,3 +118,18 @@ def care_notes(request, child_id):
 
     notes = child.care_notes.all()
     return render(request, 'care_notes.html', {'child': child, 'notes': notes})
+
+# ---------------------------
+# Reporting
+# ---------------------------
+@login_required
+def child_report(request):
+    if request.user.role == 'ADMIN':
+        children = Child.objects.all()
+    elif request.user.role == 'PARENT':
+        children = request.user.children_as_parent.all()
+    elif request.user.role == 'CAREGIVER':
+        children = request.user.children_as_caregiver.all()
+    else:
+        children = []
+    return render(request, 'child_report.html', {'children': children})

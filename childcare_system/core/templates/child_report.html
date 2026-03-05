@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Child Report{% endblock %}
+{% block content %}
+<h2>Child Report</h2>
+<table class="table table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Parent</th>
+        <th>Caregiver</th>
+    </tr>
+    {% for child in children %}
+    <tr>
+        <td>{{ child.name }}</td>
+        <td>{{ child.age }}</td>
+        <td>{{ child.parent.username }}</td>
+        <td>{{ child.caregiver.username if child.caregiver else "Unassigned" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
