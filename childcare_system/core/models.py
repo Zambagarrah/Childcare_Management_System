@@ -39,3 +39,16 @@ class Child(models.Model):
 
     def __str__(self):
         return f"{self.name} (Age: {self.age})"
+
+class CareNote(models.Model):
+    child = models.ForeignKey('Child', on_delete=models.CASCADE, related_name='care_notes')
+    caregiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        limit_choices_to={'role': 'CAREGIVER'}
+    )
+    note = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Note for {self.child.name} by {self.caregiver.username}"
