@@ -133,3 +133,14 @@ def child_report(request):
     else:
         children = []
     return render(request, 'child_report.html', {'children': children})
+
+@login_required
+def care_notes_report(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
+
+    # Parents can only view their own child’s notes
+    if request.user.role == 'PARENT' and child.parent != request.user:
+        return HttpResponseForbidden("You cannot view notes for another parent's child.")
+
+    notes = child.care_notes.all().order_by('-created_at')
+    return render(request, 'care_notes_report.html', {'child': child, 'notes': notes})

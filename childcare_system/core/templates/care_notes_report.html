@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Care Notes Report{% endblock %}
+{% block content %}
+<h2>Care Notes Report for {{ child.name }}</h2>
+<ul class="list-group">
+    {% for note in notes %}
+    <li class="list-group-item">
+        <strong>{{ note.caregiver.username }}</strong> ({{ note.created_at|date:"Y-m-d H:i" }}): {{ note.note }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
