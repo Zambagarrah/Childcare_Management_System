@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
 
@@ -18,16 +19,12 @@ class User(AbstractUser):
 class Child(models.Model):
     name = models.CharField(max_length=100)
     age = models.PositiveIntegerField()
-
-    # Parent relationship
     parent = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         limit_choices_to={'role': 'PARENT'},
         related_name='children_as_parent'
     )
-
-    # Caregiver relationship
     caregiver = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -35,6 +32,10 @@ class Child(models.Model):
         limit_choices_to={'role': 'CAREGIVER'},
         related_name='children_as_caregiver'
     )
+
+    def clean(self):
+        if self.age <= 0 or self.age > 18:
+            raise ValidationError("Age must be between 1 and 18.")
 
     def __str__(self):
         return f"{self.name} (Age: {self.age})"
