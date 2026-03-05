@@ -101,16 +101,20 @@ def child_delete(request, pk):
 @login_required
 def care_notes(request, child_id):
     """Allows caregivers to add notes for assigned children.
-       Parents and Admins can view notes but not add them."""
+        Parents and Admins can view notes but not add them."""
     child = get_object_or_404(Child, id=child_id)
 
-    # Caregiver can add notes only if assigned
     if request.user.role == 'CAREGIVER' and child.caregiver == request.user:
         if request.method == 'POST':
             note_text = request.POST.get('note')
             if note_text and note_text.strip():
                 CareNote.objects.create(child=child, caregiver=request.user, note=note_text)
+            else:
+                return render(request, 'care_notes.html', {
+                    'child': child,
+                    'notes': child.care_notes.all(),
+                    'error': "Note cannot be empty."
+                })
 
-    # Admins and Parents can only view notes
     notes = child.care_notes.all()
     return render(request, 'care_notes.html', {'child': child, 'notes': notes})
