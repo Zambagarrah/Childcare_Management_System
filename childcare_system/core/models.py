@@ -69,3 +69,17 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message from {self.sender.username} to {self.recipient.username}"
+
+class Activity(models.Model):
+    child = models.ForeignKey('Child', on_delete=models.CASCADE, related_name='activities')
+    caregiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        limit_choices_to={'role': 'CAREGIVER'}
+    )
+    activity_type = models.CharField(max_length=50)  # e.g. Meal, Nap, Lesson, Playtime
+    description = models.TextField()
+    scheduled_at = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.activity_type} for {self.child.name} at {self.scheduled_at}"
