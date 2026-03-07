@@ -33,3 +33,7 @@ urlpatterns += [
     path('children/<int:child_id>/activities/', views.activity_list, name='activity_list'),
     path('children/<int:child_id>/activities/add/', views.add_activity, name='add_activity'),
 ]
+
+urlpatterns += [
+    path('reports/summary/', views.reporting_summary, name='reporting_summary'),
+]
