@@ -3,7 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from .forms import CustomUserCreationForm, ChildForm
-from .models import Child, CareNote, Message
+from .models import Child, CareNote, Message, Activity
 
 # ---------------------------
 # User Registration
@@ -162,3 +162,37 @@ def send_message(request, recipient_id):
             Message.objects.create(sender=request.user, recipient=recipient, content=content)
             return redirect('inbox')
     return render(request, 'send_message.html', {'recipient': recipient})
+
+# ---------------------------
+# Activity Logs
+# ---------------------------
+@login_required
+def activity_list(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
+    activities = child.activities.all().order_by('scheduled_at')
+    return render(request, 'activity_list.html', {'child': child, 'activities': activities})
+
+@login_required
+def add_activity(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
+
+    # Only assigned caregiver can add activities
+    if request.user.role != 'CAREGIVER' or child.caregiver != request.user:
+        return HttpResponseForbidden("Only the assigned caregiver can add activities.")
+
+    if request.method == 'POST':
+        activity_type = request.POST.get('activity_type')
+        description = request.POST.get('description')
+        scheduled_at = request.POST.get('scheduled_at')
+
+        if activity_type.strip() and description.strip() and scheduled_at.strip():
+            Activity.objects.create(
+                child=child,
+                caregiver=request.user,
+                activity_type=activity_type,
+                description=description,
+                scheduled_at=scheduled_at
+            )
+            return redirect('activity_list', child_id=child.id)
+
+    return render(request, 'add_activity.html', {'child': child})
