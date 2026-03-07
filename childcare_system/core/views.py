@@ -3,7 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from .forms import CustomUserCreationForm, ChildForm
-from .models import Child, CareNote
+from .models import Child, CareNote, Message
 
 # ---------------------------
 # User Registration
@@ -144,3 +144,21 @@ def care_notes_report(request, child_id):
 
     notes = child.care_notes.all().order_by('-created_at')
     return render(request, 'care_notes_report.html', {'child': child, 'notes': notes})
+
+# ---------------------------
+# Messaging
+# ---------------------------
+@login_required
+def inbox(request):
+    messages = Message.objects.filter(recipient=request.user).order_by('-created_at')
+    return render(request, 'inbox.html', {'messages': messages})
+
+@login_required
+def send_message(request, recipient_id):
+    recipient = get_object_or_404(User, id=recipient_id)
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if content.strip():
+            Message.objects.create(sender=request.user, recipient=recipient, content=content)
+            return redirect('inbox')
+    return render(request, 'send_message.html', {'recipient': recipient})

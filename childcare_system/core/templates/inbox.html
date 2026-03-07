@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Inbox{% endblock %}
+{% block content %}
+<h2>Inbox</h2>
+<ul class="list-group">
+    {% for msg in messages %}
+    <li class="list-group-item">
+        <strong>{{ msg.sender.username }}</strong> ({{ msg.created_at|date:"Y-m-d H:i" }}): {{ msg.content }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
