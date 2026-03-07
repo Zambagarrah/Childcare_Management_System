@@ -28,3 +28,8 @@ urlpatterns += [
     path('inbox/', views.inbox, name='inbox'),
     path('send/<int:recipient_id>/', views.send_message, name='send_message'),
 ]
+
+urlpatterns += [
+    path('children/<int:child_id>/activities/', views.activity_list, name='activity_list'),
+    path('children/<int:child_id>/activities/add/', views.add_activity, name='add_activity'),
+]
