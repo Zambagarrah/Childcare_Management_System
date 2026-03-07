@@ -23,3 +23,8 @@ urlpatterns += [
     path('reports/children/<int:child_id>/notes/', views.care_notes_report, name='care_notes_report'),
     path('children/<int:child_id>/notes/', views.care_notes, name='care_notes'),
 ]
+
+urlpatterns += [
+    path('inbox/', views.inbox, name='inbox'),
+    path('send/<int:recipient_id>/', views.send_message, name='send_message'),
+]
