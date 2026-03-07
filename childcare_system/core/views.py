@@ -7,6 +7,24 @@ import csv
 from reportlab.pdfgen import canvas
 
 from .models import Child, CareNote, Activity, Message, User
+from django.contrib.auth.forms import UserCreationForm
+
+
+# ---------------------------
+# AUTH / REGISTER
+# ---------------------------
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, "Registration successful! You can now log in.")
+            return redirect('login')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})
 
 
 # ---------------------------
@@ -93,6 +111,20 @@ def care_notes(request, child_id):
             return HttpResponseForbidden("Only assigned caregiver can add notes.")
 
     return render(request, 'care_notes.html', {'child': child, 'notes': notes})
+
+@login_required
+def care_notes_report(request, child_id):
+    child = get_object_or_404(Child, id=child_id)
+
+    # Parents can only view their own child’s notes
+    if request.user.role == 'PARENT' and child.parent != request.user:
+        return HttpResponseForbidden("You cannot view notes for another parent's child.")
+
+    notes = child.care_notes.all().order_by('-created_at')
+    return render(request, 'care_notes_report.html', {
+        'child': child,
+        'notes': notes
+    })
 
 
 # ---------------------------
@@ -194,13 +226,14 @@ def export_summary_pdf(request):
 @login_required
 def inbox(request):
     messages_qs = Message.objects.filter(recipient=request.user).order_by('-created_at')
-    return render(request, 'inbox.html', {'messages': messages_qs})
-
+    users = User.objects.exclude(id=request.user.id)  # exclude self
+    return render(request, 'inbox.html', {'messages': messages_qs, 'users': users})
 
 @login_required
-def send_message(request, recipient_id):
-    recipient = get_object_or_404(User, id=recipient_id)
+def send_message(request, recipient_id=None):
     if request.method == 'POST':
+        recipient_id = request.POST.get('recipient_id') or recipient_id
+        recipient = get_object_or_404(User, id=recipient_id)
         content = request.POST.get('content')
         if content.strip():
             Message.objects.create(sender=request.user, recipient=recipient, content=content)
@@ -208,6 +241,8 @@ def send_message(request, recipient_id):
             return redirect('inbox')
         else:
             messages.error(request, "Message cannot be empty.")
+    else:
+        recipient = get_object_or_404(User, id=recipient_id) if recipient_id else None
     return render(request, 'send_message.html', {'recipient': recipient})
 
 

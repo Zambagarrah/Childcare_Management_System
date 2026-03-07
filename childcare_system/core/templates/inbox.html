@@ -1,12 +1,89 @@
 {% extends 'base.html' %}
 {% block title %}Inbox{% endblock %}
+
 {% block content %}
 <h2>Inbox</h2>
-<ul class="list-group">
-    {% for msg in messages %}
-    <li class="list-group-item">
-        <strong>{{ msg.sender.username }}</strong> ({{ msg.created_at|date:"Y-m-d H:i" }}): {{ msg.content }}
-    </li>
-    {% endfor %}
-</ul>
+
+<!-- Toast notifications -->
+{% if messages %}
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        {% for message in messages %}
+        <div class="toast align-items-center text-bg-{{ message.tags }} border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        var toastList = toastElList.map(function(toastEl) {
+            return new bootstrap.Toast(toastEl, { delay: 3000 });
+        });
+        toastList.forEach(toast => toast.show());
+    });
+</script>
+{% endif %}
+
+<!-- Compose New Message form -->
+<div class="card mb-4">
+    <div class="card-header">
+        Compose New Message
+    </div>
+    <div class="card-body">
+        <form method="post" action="{% url 'send_message' 0 %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="recipient" class="form-label">Recipient</label>
+                <select name="recipient_id" id="recipient" class="form-select" required>
+                    <option value="" disabled selected>Select a recipient</option>
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.username }} ({{ user.role }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">Message</label>
+                <textarea name="content" id="content" class="form-control" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Send</button>
+        </form>
+    </div>
+</div>
+
+<!-- Inbox messages -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>From</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Reply</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for msg in messages_qs %}
+        <tr>
+            <td>{{ msg.sender.username }}</td>
+            <td>{{ msg.content }}</td>
+            <td>{{ msg.created_at }}</td>
+            <td>
+                <a href="{% url 'send_message' msg.sender.id %}" class="btn btn-primary btn-sm">
+                    Reply
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center text-muted">No messages yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

@@ -20,7 +20,7 @@ urlpatterns += [
 
 urlpatterns += [
     path('reports/children/', views.child_report, name='child_report'),
-    path('reports/children/<int:child_id>/notes/', views.care_notes_report, name='care_notes_report'),
+    # path('reports/children/<int:child_id>/notes/', views.care_notes_report, name='care_notes_report'),
     path('children/<int:child_id>/notes/', views.care_notes, name='care_notes'),
 ]
 

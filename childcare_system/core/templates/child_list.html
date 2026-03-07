@@ -14,6 +14,7 @@
         <th>Parent</th>
         <th>Add Notes</th>
         <th>Caregiver</th>
+        <th>Message Caregiver</th> <!-- NEW COLUMN -->
         {% if user.role == 'ADMIN' %}
             <th>Actions</th>
         {% endif %}
@@ -35,6 +36,15 @@
                 {{ child.caregiver.username }}
             {% else %}
                 Unassigned
+            {% endif %}
+        </td>
+        <td>
+            {% if child.caregiver %}
+                <a href="{% url 'send_message' child.caregiver.id %}" class="btn btn-primary">
+                    Message
+                </a>
+            {% else %}
+                <span class="text-muted">No caregiver</span>
             {% endif %}
         </td>
         {% if user.role == 'ADMIN' %}
