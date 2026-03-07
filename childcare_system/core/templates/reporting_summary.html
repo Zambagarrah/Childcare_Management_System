@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Reporting Summary{% endblock %}
+{% block content %}
+<h2>Reporting Summary</h2>
+
+<p><strong>Total Children:</strong> {{ total_children }}</p>
+<p><strong>Total Care Notes:</strong> {{ total_notes }}</p>
+<p><strong>Total Activities:</strong> {{ total_activities }}</p>
+<p><strong>Average Notes per Child:</strong> {{ avg_notes_per_child|floatformat:2 }}</p>
+<p><strong>Average Activities per Child:</strong> {{ avg_activities_per_child|floatformat:2 }}</p>
+
+<hr>
+<h3>Children Breakdown</h3>
+<ul>
+    {% for child in children %}
+    <li>
+        {{ child.name }} — Notes: {{ child.care_notes.count }} | Activities: {{ child.activities.count }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
