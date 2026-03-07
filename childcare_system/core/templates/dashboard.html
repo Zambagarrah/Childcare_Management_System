@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2>{{ role }} Dashboard</h2>
+
+{% if role == 'ADMIN' %}
+    <p>Total Children: {{ total_children }}</p>
+    <p>Total Parents: {{ total_parents }}</p>
+    <p>Total Caregivers: {{ total_caregivers }}</p>
+    <p>Total Notes: {{ total_notes }}</p>
+    <p>Total Activities: {{ total_activities }}</p>
+    <a href="{% url 'reporting_summary' %}" class="btn btn-info">View Reports</a>
+
+{% elif role == 'PARENT' %}
+    <h3>Your Children</h3>
+    <ul>
+        {% for child in children %}
+        <li>{{ child.name }} — Notes: {{ child.care_notes.count }} | Activities: {{ child.activities.count }}</li>
+        {% endfor %}
+    </ul>
+    <p>Total Notes: {{ notes_count }}</p>
+    <p>Total Activities: {{ activities_count }}</p>
+
+{% elif role == 'CAREGIVER' %}
+    <h3>Assigned Children</h3>
+    <ul>
+        {% for child in children %}
+        <li>{{ child.name }} — Notes: {{ child.care_notes.count }} | Activities: {{ child.activities.count }}</li>
+        {% endfor %}
+    </ul>
+    <p>Total Notes: {{ notes_count }}</p>
+    <p>Total Activities: {{ activities_count }}</p>
+    <a href="{% url 'inbox' %}" class="btn btn-primary">Messages</a>
+
+{% else %}
+    <p>No dashboard available for your role.</p>
+{% endif %}
+{% endblock %}
