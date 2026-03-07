@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
+from reportlab.pdfgen import canvas  # for PDF export
 from .forms import CustomUserCreationForm, ChildForm
 from .models import Child, CareNote, Message, Activity
+import csv
 
 # ---------------------------
 # User Registration
@@ -171,6 +173,54 @@ def reporting_summary(request):
         'avg_notes_per_child': avg_notes_per_child,
         'avg_activities_per_child': avg_activities_per_child,
     })
+
+@login_required
+def export_summary_csv(request):
+    if request.user.role == 'ADMIN':
+        children = Child.objects.all()
+    elif request.user.role == 'PARENT':
+        children = request.user.children_as_parent.all()
+    elif request.user.role == 'CAREGIVER':
+        children = request.user.children_as_caregiver.all()
+    else:
+        children = []
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="summary.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Child', 'Notes Count', 'Activities Count'])
+
+    for child in children:
+        writer.writerow([child.name, child.care_notes.count(), child.activities.count()])
+
+    return response
+
+
+@login_required
+def export_summary_pdf(request):
+    if request.user.role == 'ADMIN':
+        children = Child.objects.all()
+    elif request.user.role == 'PARENT':
+        children = request.user.children_as_parent.all()
+    elif request.user.role == 'CAREGIVER':
+        children = request.user.children_as_caregiver.all()
+    else:
+        children = []
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="summary.pdf"'
+    p = canvas.Canvas(response)
+
+    p.drawString(100, 800, "Childcare Reporting Summary")
+    y = 760
+    for child in children:
+        line = f"{child.name} — Notes: {child.care_notes.count()} | Activities: {child.activities.count()}"
+        p.drawString(100, y, line)
+        y -= 20
+
+    p.showPage()
+    p.save()
+    return response
 
 
 # ---------------------------
