@@ -9,6 +9,9 @@
 <p><strong>Average Notes per Child:</strong> {{ avg_notes_per_child|floatformat:2 }}</p>
 <p><strong>Average Activities per Child:</strong> {{ avg_activities_per_child|floatformat:2 }}</p>
 
+<a href="{% url 'export_summary_csv' %}" class="btn btn-success mt-3">Export CSV</a>
+<a href="{% url 'export_summary_pdf' %}" class="btn btn-danger mt-3">Export PDF</a>
+
 <hr>
 <h3>Children Breakdown</h3>
 <ul>
