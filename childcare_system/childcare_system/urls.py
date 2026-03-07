@@ -39,3 +39,8 @@ urlpatterns += [
     path('reports/summary/export/csv/', views.export_summary_csv, name='export_summary_csv'),
     path('reports/summary/export/pdf/', views.export_summary_pdf, name='export_summary_pdf'),
 ]
+
+urlpatterns += [
+    path('dashboard/', views.dashboard, name='dashboard'),
+]
+
