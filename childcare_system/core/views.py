@@ -145,6 +145,34 @@ def care_notes_report(request, child_id):
     notes = child.care_notes.all().order_by('-created_at')
     return render(request, 'care_notes_report.html', {'child': child, 'notes': notes})
 
+@login_required
+def reporting_summary(request):
+    if request.user.role == 'ADMIN':
+        children = Child.objects.all()
+    elif request.user.role == 'PARENT':
+        children = request.user.children_as_parent.all()
+    elif request.user.role == 'CAREGIVER':
+        children = request.user.children_as_caregiver.all()
+    else:
+        children = []
+
+    total_children = children.count()
+    total_notes = sum(child.care_notes.count() for child in children)
+    total_activities = sum(child.activities.count() for child in children)
+
+    avg_notes_per_child = total_notes / total_children if total_children > 0 else 0
+    avg_activities_per_child = total_activities / total_children if total_children > 0 else 0
+
+    return render(request, 'reporting_summary.html', {
+        'children': children,
+        'total_children': total_children,
+        'total_notes': total_notes,
+        'total_activities': total_activities,
+        'avg_notes_per_child': avg_notes_per_child,
+        'avg_activities_per_child': avg_activities_per_child,
+    })
+
+
 # ---------------------------
 # Messaging
 # ---------------------------
