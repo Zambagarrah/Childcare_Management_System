@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Add Activity{% endblock %}
+{% block content %}
+<h2>Add Activity for {{ child.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="activity_type" class="form-control mb-2" placeholder="Activity Type (e.g. Meal, Nap)">
+    <textarea name="description" class="form-control mb-2" placeholder="Description"></textarea>
+    <input type="datetime-local" name="scheduled_at" class="form-control mb-2">
+    <button type="submit" class="btn btn-primary">Save Activity</button>
+</form>
+{% endblock %}
