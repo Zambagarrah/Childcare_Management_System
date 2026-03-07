@@ -12,6 +12,7 @@
         <th>Name</th>
         <th>Age</th>
         <th>Parent</th>
+        <th>Add Notes</th>
         <th>Caregiver</th>
         {% if user.role == 'ADMIN' %}
             <th>Actions</th>
@@ -22,6 +23,13 @@
         <td>{{ child.name }}</td>
         <td>{{ child.age }}</td>
         <td>{{ child.parent.username }}</td>
+        <td>
+            {% if user.role == 'CAREGIVER' and child.caregiver == user %}
+                <a href="{% url 'care_notes' child.id %}" class="btn btn-sm btn-info">Add/View Notes</a>
+            {% else %}
+                <a href="{% url 'care_notes' child.id %}" class="btn btn-sm btn-secondary">View Notes</a>
+            {% endif %}
+        </td>
         <td>
             {% if child.caregiver %}
                 {{ child.caregiver.username }}

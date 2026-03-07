@@ -14,7 +14,13 @@
         <td>{{ child.name }}</td>
         <td>{{ child.age }}</td>
         <td>{{ child.parent.username }}</td>
-        <td>{{ child.caregiver.username if child.caregiver else "Unassigned" }}</td>
+        <td>
+            {% if child.caregiver %}
+                {{ child.caregiver.username }}
+            {% else %}
+                Unassigned
+            {% endif %}
+        </td>
     </tr>
     {% endfor %}
 </table>

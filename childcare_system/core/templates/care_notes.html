@@ -3,14 +3,13 @@
 {% block content %}
 <h2>Care Notes for {{ child.name }}</h2>
 
-{% if user.role == 'CAREGIVER' and child.caregiver == user %}
+{% if user.role == 'CAREGIVER' %}
 <form method="post">
     {% csrf_token %}
     <textarea name="note" class="form-control mb-2" placeholder="Enter care note"></textarea>
     <button type="submit" class="btn btn-primary">Add Note</button>
 </form>
 {% endif %}
-
 <hr>
 <h3>Previous Notes</h3>
 <ul class="list-group">
