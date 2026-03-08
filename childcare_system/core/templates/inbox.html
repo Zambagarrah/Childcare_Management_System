@@ -1,20 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}Inbox{% endblock %}
-
 {% block content %}
-<h2>Inbox</h2>
+<h2 class="text-primary">Inbox</h2>
 
 <!-- Toast notifications -->
 {% if messages %}
 <div aria-live="polite" aria-atomic="true" class="position-relative">
     <div class="toast-container position-fixed top-0 end-0 p-3">
         {% for message in messages %}
-        <div class="toast align-items-center text-bg-{{ message.tags }} border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast align-items-center text-bg-{{ message.tags }} border-0 mb-2 shadow" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
-                <div class="toast-body">
-                    {{ message }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                <div class="toast-body">{{ message }}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
         {% endfor %}
@@ -31,11 +28,9 @@
 </script>
 {% endif %}
 
-<!-- Compose New Message form -->
-<div class="card mb-4">
-    <div class="card-header">
-        Compose New Message
-    </div>
+<!-- Compose New Message -->
+<div class="card mb-4 shadow">
+    <div class="card-header bg-primary text-white">Compose New Message</div>
     <div class="card-body">
         <form method="post" action="{% url 'send_message' 0 %}">
             {% csrf_token %}
@@ -57,9 +52,9 @@
     </div>
 </div>
 
-<!-- Inbox messages -->
-<table class="table table-striped">
-    <thead>
+<!-- Inbox Messages -->
+<table class="table table-hover shadow">
+    <thead class="table-primary">
         <tr>
             <th>From</th>
             <th>Message</th>
@@ -74,9 +69,7 @@
             <td>{{ msg.content }}</td>
             <td>{{ msg.created_at }}</td>
             <td>
-                <a href="{% url 'send_message' msg.sender.id %}" class="btn btn-primary btn-sm">
-                    Reply
-                </a>
+                <a href="{% url 'send_message' msg.sender.id %}" class="btn btn-info btn-sm">Reply</a>
             </td>
         </tr>
         {% empty %}

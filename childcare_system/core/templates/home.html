@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="text-center mt-5">
+    <h1 class="text-primary fw-bold">Welcome to Childcare System</h1>
+    <p class="lead text-muted">Manage children, caregivers, notes, and communication with ease.</p>
+    <a href="{% url 'login' %}" class="btn btn-primary btn-lg shadow">Login</a>
+    <a href="{% url 'register' %}" class="btn btn-info btn-lg shadow">Register</a>
+</div>
+{% endblock %}

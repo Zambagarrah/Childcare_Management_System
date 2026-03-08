@@ -26,6 +26,11 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
 
+# ---------------------------
+# Home Page
+# ---------------------------
+def home(request):
+    return render(request, 'home.html')
 
 # ---------------------------
 # CHILD CRUD
