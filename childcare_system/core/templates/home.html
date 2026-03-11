@@ -1,10 +1,51 @@
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<div class="text-center mt-5">
-    <h1 class="text-primary fw-bold">Welcome to Childcare System</h1>
-    <p class="lead text-muted">Manage children, caregivers, notes, and communication with ease.</p>
-    <a href="{% url 'login' %}" class="btn btn-primary btn-lg shadow">Login</a>
-    <a href="{% url 'register' %}" class="btn btn-info btn-lg shadow">Register</a>
+<div class="text-center my-5">
+    <h1 class="text-primary fw-bold">Welcome to the Childcare System</h1>
+    {% if user.is_authenticated %}
+        <p class="lead text-muted">Hello {{ user.username }} ({{ user.role }}), manage your childcare tasks below.</p>
+    {% else %}
+        <p class="lead text-muted">Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">register</a> to continue.</p>
+    {% endif %}
+</div>
+
+<div class="row text-center">
+    <div class="col-md-3 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-body">
+                <h5 class="card-title">Children</h5>
+                <p class="card-text">View and manage registered children.</p>
+                <a href="{% url 'child_list' %}" class="btn btn-primary">Go</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-body">
+                <h5 class="card-title">Inbox</h5>
+                <p class="card-text">Send and receive caregiver messages.</p>
+                <a href="{% url 'inbox' %}" class="btn btn-info">Go</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-body">
+                <h5 class="card-title">Reports</h5>
+                <p class="card-text">View summaries and generate reports.</p>
+                <a href="{% url 'reporting_summary' %}" class="btn btn-success">Go</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-body">
+                <h5 class="card-title">Dashboard</h5>
+                <p class="card-text">Access your personalized dashboard.</p>
+                <a href="{% url 'dashboard' %}" class="btn btn-warning">Go</a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

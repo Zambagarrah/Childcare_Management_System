@@ -7,6 +7,7 @@ import csv
 from reportlab.pdfgen import canvas
 
 from .models import Child, CareNote, Activity, Message, User
+from .forms import ChildForm
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -47,27 +48,56 @@ def child_list(request):
         children = []
     return render(request, 'child_list.html', {'children': children})
 
+#
+# @login_required
+# def child_create(request):
+#     if request.user.role != 'ADMIN':
+#         return HttpResponseForbidden("Only Admins can create children.")
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         age = int(request.POST.get('age'))
+#         parent_id = request.POST.get('parent')
+#         caregiver_id = request.POST.get('caregiver')
+#
+#         if age < 1 or age > 18:
+#             messages.error(request, "Age must be between 1 and 18.")
+#         else:
+#             parent = get_object_or_404(User, id=parent_id)
+#             caregiver = get_object_or_404(User, id=caregiver_id) if caregiver_id else None
+#             Child.objects.create(name=name, age=age, parent=parent, caregiver=caregiver)
+#             messages.success(request, "Child created successfully!")
+#             return redirect('child_list')
+#     return render(request, 'child_form.html')
+#
+#
+# @login_required
+# def child_update(request, child_id):
+#     if request.user.role != 'ADMIN':
+#         return HttpResponseForbidden("Only Admins can update children.")
+#     child = get_object_or_404(Child, id=child_id)
+#     if request.method == 'POST':
+#         child.name = request.POST.get('name')
+#         child.age = int(request.POST.get('age'))
+#         caregiver_id = request.POST.get('caregiver')
+#         child.caregiver = get_object_or_404(User, id=caregiver_id) if caregiver_id else None
+#         child.save()
+#         messages.success(request, "Child updated successfully!")
+#         return redirect('child_list')
+#     return render(request, 'child_form.html', {'child': child})
 
 @login_required
 def child_create(request):
     if request.user.role != 'ADMIN':
         return HttpResponseForbidden("Only Admins can create children.")
     if request.method == 'POST':
-        name = request.POST.get('name')
-        age = int(request.POST.get('age'))
-        parent_id = request.POST.get('parent')
-        caregiver_id = request.POST.get('caregiver')
-
-        if age < 1 or age > 18:
-            messages.error(request, "Age must be between 1 and 18.")
-        else:
-            parent = get_object_or_404(User, id=parent_id)
-            caregiver = get_object_or_404(User, id=caregiver_id) if caregiver_id else None
-            Child.objects.create(name=name, age=age, parent=parent, caregiver=caregiver)
+        form = ChildForm(request.POST)
+        if form.is_valid():
+            form.save()
             messages.success(request, "Child created successfully!")
             return redirect('child_list')
-    return render(request, 'child_form.html')
-
+    else:
+        form = ChildForm()
+    return render(request, 'child_form.html', {'form': form})
 
 @login_required
 def child_update(request, child_id):
@@ -75,14 +105,15 @@ def child_update(request, child_id):
         return HttpResponseForbidden("Only Admins can update children.")
     child = get_object_or_404(Child, id=child_id)
     if request.method == 'POST':
-        child.name = request.POST.get('name')
-        child.age = int(request.POST.get('age'))
-        caregiver_id = request.POST.get('caregiver')
-        child.caregiver = get_object_or_404(User, id=caregiver_id) if caregiver_id else None
-        child.save()
-        messages.success(request, "Child updated successfully!")
-        return redirect('child_list')
-    return render(request, 'child_form.html', {'child': child})
+        form = ChildForm(request.POST, instance=child)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Child updated successfully!")
+            return redirect('child_list')
+    else:
+        form = ChildForm(instance=child)
+    return render(request, 'child_form.html', {'form': form})
+
 
 
 @login_required
