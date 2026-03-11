@@ -3,7 +3,7 @@
 {% block content %}
 <h2 class="text-primary">Children List</h2>
 
-{% if user.role == 'ADMIN' %}
+{% if user.role == 'ADMIN' or user.role == 'PARENT'  %}
     <a href="{% url 'child_create' %}" class="btn btn-primary mb-3 shadow">Add Child</a>
 {% endif %}
 

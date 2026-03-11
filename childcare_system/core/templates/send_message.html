@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Send Message{% endblock %}
 {% block content %}
-    <h2>Send Message to {{ recipient.username }}</h2>
-    <form method="post">
-        {% csrf_token %}
-        <input type="hidden" name="recipient_id" value="{{ recipient.id }}">
-        <textarea name="content" class="form-control mb-2" placeholder="Enter your message"></textarea>
-        <button type="submit" class="btn btn-primary">Send</button>
-    </form>
+<h2>Send Message to {{ recipient.username }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="recipient_id" value="{{ recipient.id }}">
+    <textarea name="content" class="form-control mb-2" placeholder="Enter your message"></textarea>
+    <button type="submit" class="btn btn-primary">Send</button>
 {% endblock %}
