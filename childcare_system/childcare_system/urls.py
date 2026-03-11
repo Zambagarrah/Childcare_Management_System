@@ -15,8 +15,9 @@ urlpatterns = [
 urlpatterns += [
     path('children/', views.child_list, name='child_list'),
     path('children/create/', views.child_create, name='child_create'),
-    path('children/<int:pk>/update/', views.child_update, name='child_update'),
-    path('children/<int:pk>/delete/', views.child_delete, name='child_delete'),
+    path('children/<int:child_id>/update/', views.child_update, name='child_update'),
+    path('children/<int:child_id>/delete/', views.child_delete, name='child_delete'),
+
 ]
 
 urlpatterns += [
