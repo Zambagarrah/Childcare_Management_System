@@ -49,19 +49,38 @@ def child_list(request):
     return render(request, 'child_list.html', {'children': children})
 
 
+# @login_required
+# def child_create(request):
+#     if request.user.role != 'ADMIN':
+#         return HttpResponseForbidden("Only Admins can create children.")
+#     if request.method == 'POST':
+#         form = ChildForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Child created successfully!")
+#             return redirect('child_list')
+#     else:
+#         form = ChildForm()
+#     return render(request, 'child_form.html', {'form': form})
 @login_required
 def child_create(request):
-    if request.user.role != 'ADMIN':
-        return HttpResponseForbidden("Only Admins can create children.")
+    if request.user.role not in ['ADMIN', 'PARENT']:
+        return HttpResponseForbidden("Only Admins or Parents can create children.")
     if request.method == 'POST':
         form = ChildForm(request.POST)
         if form.is_valid():
-            form.save()
+            child = form.save(commit=False)
+            if request.user.role == 'PARENT':
+                child.parent = request.user
+                child.caregiver = None  # leave unassigned
+                messages.info(request, "Child created. Admin will assign a caregiver.")
+            child.save()
             messages.success(request, "Child created successfully!")
             return redirect('child_list')
     else:
         form = ChildForm()
     return render(request, 'child_form.html', {'form': form})
+
 
 @login_required
 def child_update(request, child_id):
