@@ -29,6 +29,7 @@ urlpatterns += [
 urlpatterns += [
     path('inbox/', views.inbox, name='inbox'),
     path('send/<int:recipient_id>/', views.send_message, name='send_message'),
+    path('sent/', views.sent_messages, name='sent_messages'),
 ]
 
 urlpatterns += [

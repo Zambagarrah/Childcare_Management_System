@@ -41,9 +41,11 @@
                     <span class="text-muted">Unassigned</span>
                 {% endif %}
             </td>
+            td
             <td>
                 {% if child.caregiver %}
                     <a href="{% url 'send_message' child.caregiver.id %}" class="btn btn-primary btn-sm">Message</a>
+                    <a href="{% url 'send_message' child.parent.id %}" class="btn btn-primary btn-sm">Message Parent</a>
                 {% else %}
                     <span class="text-muted">No caregiver</span>
                 {% endif %}

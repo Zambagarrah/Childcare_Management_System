@@ -264,6 +264,10 @@ def send_message(request, recipient_id=None):
         recipient = get_object_or_404(User, id=recipient_id) if recipient_id else None
     return render(request, 'send_message.html', {'recipient': recipient})
 
+@login_required
+def sent_messages(request):
+    messages_qs = Message.objects.filter(sender=request.user).order_by('-created_at')
+    return render(request, 'sent_messages.html', {'messages': messages_qs})
 
 # ---------------------------
 # ACTIVITIES
